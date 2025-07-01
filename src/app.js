@@ -1,11 +1,14 @@
 const express = require("express");
-
+const connectDB = require("./config/database")
 const app = express();
 
-app.use((req, res) => {
-    res.send("Hello from server")
-})
-
-app.listen(3000 , () => {
-    console.log("server is successfully running")
-})
+connectDB()
+    .then(() => {
+        console.log("Db connection established")
+        app.listen(3000, () => {
+            console.log("server is successfully running")
+        })
+    })
+    .catch((err) => {
+        console.log("Error")
+    })
