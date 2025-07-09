@@ -20,16 +20,16 @@ const userSchema = new mongoose.Schema({
         trim: true,
         validate(value) {
             if (!validator.isEmail(value)) {
-                throw new Error("Invalid email address"+ value)
+                throw new Error("Invalid email address" + value)
             }
         }
     },
     password: {
         type: String,
         required: true,
-         validate(value) {
+        validate(value) {
             if (!validator.isStrongPassword(value)) {
-                throw new Error("Enter a strong password"+ value)
+                throw new Error("Enter a strong password" + value)
             }
         }
     },
@@ -47,7 +47,7 @@ const userSchema = new mongoose.Schema({
     },
     photoUrl: {
         type: String,
-         validate(value) {
+        validate(value) {
             if (!validator.isURL(value)) {
                 throw new Error("Invalid email address" + value)
             }
@@ -64,6 +64,14 @@ const userSchema = new mongoose.Schema({
     timestamps: true
 })
 
+//userSchema.index({ firstName: 1 })
+
+userSchema.method.getJWT = async function () {
+    const user = this
+    const token = await JsonWebTokenError.sign({ _id: user._id }, "DEV@Tinder@123", {
+        expiresIn: "7d"
+    })
+}
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;
