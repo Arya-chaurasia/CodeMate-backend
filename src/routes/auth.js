@@ -35,7 +35,7 @@ router.post("/login", async (req, res) => {
 
         const user = await User.findOne({ emailId: emailId })
         if (!user) {
-            throw new Error("Invalid credentials")
+            throw new Error("Invalid credentials - email")
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password)
@@ -47,7 +47,7 @@ router.post("/login", async (req, res) => {
             console.log(user, "user")
             res.send("Login Successful")
         } else {
-            throw new Error("Invalid credentials")
+            throw new Error("Invalid credentials password")
         }
     } catch (err) {
         console.log("Error in login" + err)
