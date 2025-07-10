@@ -23,4 +23,30 @@ router.get("/user/requests", userAuth, async (req, res) => {
     }
 })
 
+router.get("/user/connections", userAuth, async (req, res) => {
+    try {
+        const loggedInUser = req.user;
+
+        const connectionRequests = await ConnectionRequest.find({
+            $or: [
+                { toUserId: loggedInUser, status: "accepted" },
+                { fromUserId: loggedInUser, status: "accepted" }
+            ]
+        }).populate("fromUserId", "firstName lastName photoUrl age gender skills")
+        .populate("toUserId", "firstName lastName photoUrl age gender skills")
+
+        const data = connectionRequests.map((row) => {
+            if(row.fromUserId._id.toString() === loggedInUser._id.toString()){
+                return row.toUserId
+            }
+            return row.fromUserId
+        })
+
+        res.json({data})
+
+    } catch (err) {
+        res.status(400).send({ message: "Error: " + err.message })
+    }
+})
+
 module.exports = router
