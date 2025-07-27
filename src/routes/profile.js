@@ -4,10 +4,14 @@ const { validateEditProfileData } = require("../utils/validation");
 const router = express.Router();
 
 router.get("/profile", userAuth, async (req, res) => {
+    console.log("ROUTE HIT");
+    console.log("USER FROM TOKEN:", req.user);
+
     try {
         const user = req.user
         res.send(user)
     } catch (err) {
+        console.error(err, "err in profile")
         res.status(400).send("Error" + err.message)
     }
 })

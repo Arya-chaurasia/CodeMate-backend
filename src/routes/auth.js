@@ -21,8 +21,14 @@ router.post("/signup", async (req, res) => {
             password: passwordHash
         });
 
-        await user.save();
-        res.send("User successfully registed")
+        const savedUser = await user.save();
+        const token = await savedUser.getJWT();
+
+        res.cookie("token", token, {
+            expires: new Date(Date.now() + 8 * 3600000),
+        });
+
+        res.json({ message: "User successfully registed", data: savedUser })
     } catch (error) {
         console.log(error)
         res.status(400).send("Something went wrong", error)
@@ -41,8 +47,10 @@ router.post("/login", async (req, res) => {
         const isPasswordValid = await bcrypt.compare(password, user.password)
 
         if (isPasswordValid) {
-            const token = await jwt.sign({ _id: user._id }, "DEV@Tinder@123")
-            res.cookie("token", token)
+            const token = await user.getJWT();
+            res.cookie("token", token, {
+                expires: new Date(Date.now() + 8 * 3600000)
+            })
 
             console.log(user, "user")
             res.send(user)
@@ -51,7 +59,7 @@ router.post("/login", async (req, res) => {
         }
     } catch (err) {
         console.log("Error in login" + err)
-         res.status(401).send(err.message);
+        res.status(401).send(err.message);
     }
 
 })
@@ -61,7 +69,7 @@ router.post("/logout", async (req, res) => {
     res.cookie("token", null, {
         expires: new Date(Date.now())
     })
-res.send("Logout Successful")
+    res.send("Logout Successful")
 
 })
 

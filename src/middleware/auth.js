@@ -5,6 +5,7 @@ const User = require("../models/user");
 const userAuth = async (req, res, next) => {
     try {
         const { token } = req.cookies;
+        console.log("TOKEN:", token);
         if(!token) {
             return res.status(401).send("Please loginx")
         }
@@ -22,6 +23,7 @@ const userAuth = async (req, res, next) => {
         req.user = user;
         next()
     } catch (error) {
+        console.log("JWT Error:", error.message)
         res.status(400).send("Error")
     }
 
