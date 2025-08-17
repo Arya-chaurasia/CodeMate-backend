@@ -18,7 +18,7 @@ app.use(cors(
     {
         origin: [
             "http://localhost:3000",                         // local dev
-            "https://code-mate-frontend-one.vercel.app"      // vercel frontend
+            "https://code-mate-frontend-five.vercel.app"      // vercel frontend
         ],
         credentials: true
     }
