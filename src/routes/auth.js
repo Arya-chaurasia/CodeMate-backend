@@ -25,6 +25,9 @@ router.post("/signup", async (req, res) => {
         const token = await savedUser.getJWT();
 
         res.cookie("token", token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "None",
             expires: new Date(Date.now() + 8 * 3600000),
         });
 
@@ -49,6 +52,9 @@ router.post("/login", async (req, res) => {
         if (isPasswordValid) {
             const token = await user.getJWT();
             res.cookie("token", token, {
+                httpOnly: true,       // prevents JS access
+                secure: true,         // required for HTTPS on Render
+                sameSite: "None",     // allows cross-site cookies
                 expires: new Date(Date.now() + 8 * 3600000)
             })
 
