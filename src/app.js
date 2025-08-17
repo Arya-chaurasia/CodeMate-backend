@@ -9,7 +9,9 @@ const requestRouter = require("./routes/requests")
 const userRouter = require("./routes/user")
 const cors = require("cors");
 //const paymentRouter = require("./routes/payment");
-const http = require("http")
+const http = require("http");
+const initializeSocket = require("./utils/socket");
+const chatRouter = require("./routes/chat");
 require("./utils/cronJobs")
 
 app.use(cors(
@@ -26,8 +28,10 @@ app.use("/", profileRouter)
 app.use("/", requestRouter)
 app.use("/", userRouter)
 //app.use("/", paymentRouter)
+app.use("/", chatRouter);
 
 const server = http.createServer(app)
+initializeSocket(server)
 
 
 
