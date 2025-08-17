@@ -16,7 +16,10 @@ require("./utils/cronJobs")
 
 app.use(cors(
     {
-        origin: "http://localhost:5173",
+        origin: [
+            "http://localhost:3000",                         // local dev
+            "https://code-mate-frontend-one.vercel.app"      // vercel frontend
+        ],
         credentials: true
     }
 ))
@@ -38,10 +41,12 @@ initializeSocket(server)
 connectDB()
     .then(() => {
         console.log("Db connection established")
-        server.listen(3000, () => {
+        const PORT = process.env.PORT || 3000;
+
+        server.listen(PORT, () => {
             console.log("server is successfully running")
         })
     })
     .catch((err) => {
-        console.log(err,"Error")
+        console.log(err, "Error")
     })
