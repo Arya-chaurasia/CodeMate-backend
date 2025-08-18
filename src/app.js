@@ -18,7 +18,8 @@ app.use(cors(
     {
         origin: [
             "http://localhost:3000",                         // local dev
-            "https://code-mate-frontend-five.vercel.app"      // vercel frontend
+            "https://code-mate-frontend-five.vercel.app",
+            "http://localhost:5173"
         ],
         credentials: true
     }

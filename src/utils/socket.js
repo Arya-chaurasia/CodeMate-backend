@@ -11,11 +11,17 @@ const getSecretRoomId = (userId, id) => {
 
 
 const initializeSocket = (server) => {
-    const io = socket(server, {
-        cors: {
-            origin : "http://localhost:5173",
-        }
-    });
+const io = socket(server, {
+    cors: {
+        origin: [
+          "http://localhost:5173",
+          "https://code-mate-frontend-five.vercel.app"  
+        ],
+        credentials: true
+    },
+    path: "/socket.io" 
+});
+
 
     io.on("connection", (socket)=> {
 
